@@ -1,15 +1,70 @@
+import { useState } from "react";
+import { defaultData } from "../../data/defaultData";
+
 export default function Dice() {
+  const [dice, setDice] = useState(defaultData);
+
+  if (dice[0].value === "") {
+    createBlankGame();
+  }
+
+  function createBlankGame() {
+    let firstDiceArray = [];
+    while (firstDiceArray.length < 10) {
+      firstDiceArray.push({ value: setRandomNumber(), isFixed: false });
+    }
+    // @ts-ignore
+    setDice(firstDiceArray);
+  }
+
+  function setRandomNumber() {
+    const randomNumber = Math.floor(Math.random() * (6 - 1 + 1)) + 1;
+    return randomNumber;
+  }
+
+  function rollDice() {
+    // if (dice.every((die) => die.isFixed)) {
+    //   console.log("passed");
+    //   let firstDiceArray = [];
+    //   while (firstDiceArray.length < 10) {
+    //     firstDiceArray.push({ value: setRandomNumber(), isFixed: false });
+    //   }
+    //   // @ts-ignore
+    //   setDice(firstDiceArray);
+    // }
+    let newDiceArray = dice.map((die) =>
+      die.isFixed === false ? { value: setRandomNumber(), isFixed: false } : die
+    );
+    // @ts-ignore
+    setDice(newDiceArray);
+  }
+
+  function freezeDie(elementID) {
+    setDice((prevState) =>
+      prevState.map((die, index) =>
+        index === elementID.index ? { ...die, isFixed: true } : die
+      )
+    );
+  }
+
+  //   setDice((prevState) =>
+  //       prevState
+
   return (
     <div className="dice">
       <ul className="dice_list">
-        <li className="dice_list_die green">1</li>
-        <li className="dice_list_die">2</li>
-        <li className="dice_list_die green">3</li>
-        <li className="dice_list_die">4</li>
-        <li className="dice_list_die">5</li>
-        <li className="dice_list_die">6</li>
+        {dice.length === 10 &&
+          dice.map((die, index) => (
+            <li
+              key={index}
+              className={`dice_list_die ${die.isFixed && "green"}`}
+              onClick={() => freezeDie({ index })}
+            >
+              {die.value}
+            </li>
+          ))}
       </ul>
-      <button>Roll</button>
+      <button onClick={rollDice}>Roll</button>
     </div>
   );
 }
