@@ -1,0 +1,37 @@
+.dice{
+    width: 252px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    &_list{
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        grid-gap: 18px;
+        margin-block: 24px;
+        &_die{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            height: 35px;
+            width: 35px;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
+            border-radius: 3.81277px;
+            font-size: 1.287rem;
+            &.green{
+                background-color: #59E391;
+            }
+        }
+    }
+    button{
+        width: 92px;
+        line-height: 36px;
+        box-shadow: 0px 3.2px 7.68px rgba(0, 0, 0, 0.18);
+        border-radius: 3.81277px;
+        background-color: #5035FF;
+        color: white;
+        font-size: 1.024rem;
+    }
+}
