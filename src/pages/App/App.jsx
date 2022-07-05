@@ -7,8 +7,11 @@ const root = document.getElementById("root");
 export default function App() {
   const [celebrate, setCelebration] = useState(false);
 
-  // Show confetti once tenzies is reached and celebrate is true
-  celebrate && party.confetti(root);
+  // Show confetti/sparkles once tenzies is reached and celebrate is true
+  if (celebrate) {
+    party.sparkles(root);
+    setTimeout(() => party.confetti(root), 900);
+  }
 
   return (
     <main className="main">
