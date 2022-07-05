@@ -1,27 +1,20 @@
 import { useEffect, useState } from "react";
-import { defaultData } from "../../data/defaultData";
 
 export default function Dice(props) {
-  const [dice, setDice] = useState(defaultData);
+  const [dice, setDice] = useState(() => createBlankGame());
   const [chosenNumber, setChosenNumber] = useState(0);
-
-  // Create a new game when there are no dice initiated yet
-  dice[0].value === "" && createBlankGame();
 
   // Add a celebration once all dice are fixed & same value
   useEffect(() => {
     dice.every((die) => die.isFixed) && props.fiesta(true);
   }, [dice, props]);
 
-  // Creates a completely new game
   function createBlankGame() {
-    let firstDiceArray = [];
+    const firstDiceArray = [];
     while (firstDiceArray.length < 10) {
       firstDiceArray.push({ value: setRandomNumber(), isFixed: false });
     }
-    // @ts-ignore
-    setDice(firstDiceArray);
-    props.fiesta(false);
+    return firstDiceArray;
   }
 
   function setRandomNumber() {
@@ -31,20 +24,16 @@ export default function Dice(props) {
 
   function rollDice() {
     if (dice.every((die) => die.isFixed)) {
-      createBlankGame();
+      setDice(createBlankGame());
+      props.fiesta(false);
     } else {
       let newDiceArray = dice.map((die) =>
         die.isFixed === false
           ? { value: setRandomNumber(), isFixed: false }
           : die
       );
-      // @ts-ignore
       setDice(newDiceArray);
     }
-  }
-
-  function updateChosenNumber(newNumber) {
-    setChosenNumber(newNumber);
   }
 
   function freezeDie({ die }, itemNumber) {
@@ -54,7 +43,7 @@ export default function Dice(props) {
           index === itemNumber.index ? { ...die, isFixed: true } : die
         )
       );
-      updateChosenNumber(die.value);
+      setChosenNumber(die.value);
     } else if (chosenNumber === die.value) {
       setDice((prevState) =>
         prevState.map((die, index) =>
