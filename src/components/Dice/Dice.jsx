@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { defaultData } from "../../data/defaultData";
 
-export default function Dice() {
+export default function Dice(props) {
   const [dice, setDice] = useState(defaultData);
 
-  if (dice[0].value === "") {
-    createBlankGame();
-  }
+  // Create a new game when there are no dice initiated yet
+  dice[0].value === "" && createBlankGame();
+
+  // Add a celebration once all dice are fixed & same value
+  useEffect(() => {
+    dice.every((die) => die.isFixed) && props.fiesta(true);
+  }, [dice, props]);
 
   function createBlankGame() {
     let firstDiceArray = [];
@@ -15,6 +19,7 @@ export default function Dice() {
     }
     // @ts-ignore
     setDice(firstDiceArray);
+    props.fiesta(false);
   }
 
   function setRandomNumber() {
