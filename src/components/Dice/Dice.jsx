@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { nanoid } from "nanoid";
 
 export default function Dice(props) {
   const [dice, setDice] = useState(() => createBlankGame());
@@ -12,7 +13,11 @@ export default function Dice(props) {
   function createBlankGame() {
     const firstDiceArray = [];
     while (firstDiceArray.length < 10) {
-      firstDiceArray.push({ value: setRandomNumber(), isFixed: false });
+      firstDiceArray.push({
+        id: nanoid(),
+        value: setRandomNumber(),
+        isFixed: false,
+      });
     }
     return firstDiceArray;
   }
@@ -29,25 +34,25 @@ export default function Dice(props) {
     } else {
       let newDiceArray = dice.map((die) =>
         die.isFixed === false
-          ? { value: setRandomNumber(), isFixed: false }
+          ? { ...die, value: setRandomNumber(), isFixed: false }
           : die
       );
       setDice(newDiceArray);
     }
   }
 
-  function freezeDie({ die }, itemNumber) {
+  function freezeDie(item) {
     if (chosenNumber === 0) {
       setDice((prevState) =>
-        prevState.map((die, index) =>
-          index === itemNumber.index ? { ...die, isFixed: true } : die
+        prevState.map((die) =>
+          item.id === die.id ? { ...die, isFixed: true } : die
         )
       );
-      setChosenNumber(die.value);
-    } else if (chosenNumber === die.value) {
+      setChosenNumber(item.value);
+    } else if (chosenNumber === item.value) {
       setDice((prevState) =>
-        prevState.map((die, index) =>
-          index === itemNumber.index ? { ...die, isFixed: true } : die
+        prevState.map((die) =>
+          item.id === die.id ? { ...die, isFixed: true } : die
         )
       );
     } else {
@@ -60,7 +65,7 @@ export default function Dice(props) {
     <li
       key={index}
       className={`dice_list_die ${die.isFixed && "green"}`}
-      onClick={() => freezeDie({ die }, { index })}
+      onClick={() => freezeDie(die)}
     >
       {die.value}
     </li>
