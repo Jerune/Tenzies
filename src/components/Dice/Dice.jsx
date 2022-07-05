@@ -1,14 +1,23 @@
+// @ts-nocheck
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
+import party from "party-js";
+const root = document.getElementById("root");
 
 export default function Dice(props) {
   const [dice, setDice] = useState(() => createBlankGame());
   const [chosenNumber, setChosenNumber] = useState(0);
+  const [celebrate, setCelebration] = useState(false);
 
-  console.log(chosenNumber);
+  // Show confetti/sparkles once tenzies is reached and celebrate is true
+  if (celebrate) {
+    party.sparkles(root);
+    setTimeout(() => party.confetti(root), 900);
+  }
+
   // Add a celebration once all dice are fixed & same value
   useEffect(() => {
-    dice.every((die) => die.isFixed) && props.fiesta(true);
+    dice.every((die) => die.isFixed) && setCelebration(true);
     dice.every((die) => die.isFixed === false) && setChosenNumber(0);
   }, [dice, props]);
 
@@ -34,12 +43,13 @@ export default function Dice(props) {
       setDice(createBlankGame());
       props.fiesta(false);
     } else {
-      let newDiceArray = dice.map((die) =>
-        die.isFixed === false
-          ? { ...die, value: setRandomNumber(), isFixed: false }
-          : die
+      setDice((prevState) =>
+        prevState.map((die) =>
+          die.isFixed === false
+            ? { ...die, value: setRandomNumber(), isFixed: false }
+            : die
+        )
       );
-      setDice(newDiceArray);
     }
   }
 
