@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import party from "party-js";
 const root = document.getElementById("root");
 
-export default function Dice(props) {
+export default function Dice() {
   const [dice, setDice] = useState(() => createBlankGame());
   const [chosenNumber, setChosenNumber] = useState(0);
   const [celebrate, setCelebration] = useState(false);
@@ -19,7 +19,7 @@ export default function Dice(props) {
   useEffect(() => {
     dice.every((die) => die.isFixed) && setCelebration(true);
     dice.every((die) => die.isFixed === false) && setChosenNumber(0);
-  }, [dice, props]);
+  }, [dice]);
 
   function createBlankGame() {
     const firstDiceArray = [];
@@ -41,7 +41,7 @@ export default function Dice(props) {
   function rollDice() {
     if (dice.every((die) => die.isFixed)) {
       setDice(createBlankGame());
-      props.fiesta(false);
+      setCelebration(false);
     } else {
       setDice((prevState) =>
         prevState.map((die) =>
