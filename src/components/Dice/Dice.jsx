@@ -23,20 +23,17 @@ export default function Dice() {
   }
 
   function rollDice() {
-    // if (dice.every((die) => die.isFixed)) {
-    //   console.log("passed");
-    //   let firstDiceArray = [];
-    //   while (firstDiceArray.length < 10) {
-    //     firstDiceArray.push({ value: setRandomNumber(), isFixed: false });
-    //   }
-    //   // @ts-ignore
-    //   setDice(firstDiceArray);
-    // }
-    let newDiceArray = dice.map((die) =>
-      die.isFixed === false ? { value: setRandomNumber(), isFixed: false } : die
-    );
-    // @ts-ignore
-    setDice(newDiceArray);
+    if (dice.every((die) => die.isFixed)) {
+      createBlankGame();
+    } else {
+      let newDiceArray = dice.map((die) =>
+        die.isFixed === false
+          ? { value: setRandomNumber(), isFixed: false }
+          : die
+      );
+      // @ts-ignore
+      setDice(newDiceArray);
+    }
   }
 
   function freezeDie(elementID) {
