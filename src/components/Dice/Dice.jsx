@@ -3,6 +3,7 @@ import { defaultData } from "../../data/defaultData";
 
 export default function Dice(props) {
   const [dice, setDice] = useState(defaultData);
+  const [chosenNumber, setChosenNumber] = useState(0);
 
   // Create a new game when there are no dice initiated yet
   dice[0].value === "" && createBlankGame();
@@ -12,6 +13,7 @@ export default function Dice(props) {
     dice.every((die) => die.isFixed) && props.fiesta(true);
   }, [dice, props]);
 
+  // Creates a completely new game
   function createBlankGame() {
     let firstDiceArray = [];
     while (firstDiceArray.length < 10) {
@@ -41,16 +43,28 @@ export default function Dice(props) {
     }
   }
 
-  function freezeDie(elementID) {
-    setDice((prevState) =>
-      prevState.map((die, index) =>
-        index === elementID.index ? { ...die, isFixed: true } : die
-      )
-    );
+  function updateChosenNumber(newNumber) {
+    setChosenNumber(newNumber);
   }
 
-  //   setDice((prevState) =>
-  //       prevState
+  function freezeDie({ die }, itemNumber) {
+    if (chosenNumber === 0) {
+      setDice((prevState) =>
+        prevState.map((die, index) =>
+          index === itemNumber.index ? { ...die, isFixed: true } : die
+        )
+      );
+      updateChosenNumber(die.value);
+    } else if (chosenNumber === die.value) {
+      setDice((prevState) =>
+        prevState.map((die, index) =>
+          index === itemNumber.index ? { ...die, isFixed: true } : die
+        )
+      );
+    } else {
+      alert("Please select only the same value");
+    }
+  }
 
   return (
     <div className="dice">
@@ -60,7 +74,7 @@ export default function Dice(props) {
             <li
               key={index}
               className={`dice_list_die ${die.isFixed && "green"}`}
-              onClick={() => freezeDie({ index })}
+              onClick={() => freezeDie({ die }, { index })}
             >
               {die.value}
             </li>

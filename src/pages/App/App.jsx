@@ -6,7 +6,6 @@ const root = document.getElementById("root");
 
 export default function App() {
   const [celebrate, setCelebration] = useState(false);
-  console.log(celebrate);
 
   // Show confetti once tenzies is reached and celebrate is true
   celebrate && party.confetti(root);
