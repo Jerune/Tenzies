@@ -86,7 +86,7 @@ export default function Dice() {
   return (
     <div className="dice">
       <ul className="dice_list">{diceElements}</ul>
-      <button onClick={rollDice}>Roll</button>
+      <button onClick={rollDice}>{celebrate ? "Reset" : "Roll"}</button>
     </div>
   );
 }
