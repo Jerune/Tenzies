@@ -55,20 +55,20 @@ export default function Dice(props) {
     }
   }
 
+  // Generate list items from the dice array
+  const diceElements = dice.map((die, index) => (
+    <li
+      key={index}
+      className={`dice_list_die ${die.isFixed && "green"}`}
+      onClick={() => freezeDie({ die }, { index })}
+    >
+      {die.value}
+    </li>
+  ));
+
   return (
     <div className="dice">
-      <ul className="dice_list">
-        {dice.length === 10 &&
-          dice.map((die, index) => (
-            <li
-              key={index}
-              className={`dice_list_die ${die.isFixed && "green"}`}
-              onClick={() => freezeDie({ die }, { index })}
-            >
-              {die.value}
-            </li>
-          ))}
-      </ul>
+      <ul className="dice_list">{diceElements}</ul>
       <button onClick={rollDice}>Roll</button>
     </div>
   );

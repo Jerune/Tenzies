@@ -88,6 +88,12 @@ button {
   font-size: 1.024rem;
   cursor: pointer;
 }
+.dice button:focus {
+  outline: none;
+}
+.dice button:active {
+  box-shadow: inset 5px 5px 10px -3px rgba(0, 0, 0, 0.7);
+}
 
 .main {
   padding: 34px;
