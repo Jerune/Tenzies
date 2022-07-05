@@ -5,9 +5,11 @@ export default function Dice(props) {
   const [dice, setDice] = useState(() => createBlankGame());
   const [chosenNumber, setChosenNumber] = useState(0);
 
+  console.log(chosenNumber);
   // Add a celebration once all dice are fixed & same value
   useEffect(() => {
     dice.every((die) => die.isFixed) && props.fiesta(true);
+    dice.every((die) => die.isFixed === false) && setChosenNumber(0);
   }, [dice, props]);
 
   function createBlankGame() {
@@ -52,7 +54,7 @@ export default function Dice(props) {
     } else if (chosenNumber === item.value) {
       setDice((prevState) =>
         prevState.map((die) =>
-          item.id === die.id ? { ...die, isFixed: true } : die
+          item.id === die.id ? { ...die, isFixed: !item.isFixed } : die
         )
       );
     } else {
